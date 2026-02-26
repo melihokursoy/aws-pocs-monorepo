@@ -67,7 +67,7 @@ export class TodoApiStack extends cdk.Stack {
         TODOS_TABLE_NAME: todosTable.tableName,
         NODE_OPTIONS: '--enable-source-maps',
       },
-    }
+    })
 
     // Grant Lambda permissions to read/write to DynamoDB
     todosTable.grantReadWriteData(todoApiFunction)
