@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common'
 import serverlessExpress from '@codegenie/serverless-express'
 import { Callback, Context, Handler } from 'aws-lambda'
 import { AppModule } from './app.module'
+import { setupSwagger } from './swagger-setup'
 
 let cachedServer: Handler
 
@@ -25,6 +26,9 @@ async function bootstrapServer() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
+
+  // Setup Swagger documentation (works in both local and Lambda environments)
+  setupSwagger(app)
 
   await app.init()
 
