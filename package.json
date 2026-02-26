@@ -1,0 +1,20 @@
+{
+  "name": "@aws-pocs/monorepo",
+  "version": "1.0.0",
+  "description": "AWS training proof of concepts monorepo",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "projects/*"
+  ],
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
