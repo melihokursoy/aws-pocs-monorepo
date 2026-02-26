@@ -1,0 +1,30 @@
+# Vite
+dist/
+*.local
+
+# CDK
+cdk.out/
+.cdk.staging/
+
+# Node
+node_modules/
+.pnpm-store/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

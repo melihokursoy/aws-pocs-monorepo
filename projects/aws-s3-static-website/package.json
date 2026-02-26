@@ -1,0 +1,33 @@
+{
+  "name": "@aws-pocs/aws-s3-static-website",
+  "version": "1.0.0",
+  "description": "Static S3 deployment for React TypeScript Vite application using CDK",
+  "private": true,
+  "type": "module",
+  "main": "cdk/lib/index.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cdk:synth": "cdk synth",
+    "cdk:deploy": "cdk deploy",
+    "cdk:destroy": "cdk destroy",
+    "cdk:diff": "cdk diff",
+    "deploy": "pnpm build && pnpm cdk:deploy"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@aws-cdk/core": "^2.140.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "aws-cdk-lib": "^2.140.0",
+    "constructs": "^10.3.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0"
+  }
+}

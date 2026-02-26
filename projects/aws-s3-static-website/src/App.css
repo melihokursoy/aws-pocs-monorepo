@@ -1,0 +1,147 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background: linear-gradient(135deg, #232f3e 0%, #ff9900 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+  color: #ff9900;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.card p {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card li {
+  padding: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid #404040;
+}
+
+.card li:last-child {
+  border-bottom: none;
+}
+
+.card li:before {
+  content: '✓ ';
+  color: #ff9900;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.card button {
+  background: linear-gradient(135deg, #ff9900 0%, #ff7b00 100%);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 1rem;
+  transition: opacity 0.3s;
+}
+
+.card button:hover {
+  opacity: 0.9;
+}
+
+.footer {
+  background: #1a1a1a;
+  border-top: 1px solid #404040;
+  padding: 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (prefers-color-scheme: light) {
+  .card {
+    background: white;
+    border-color: #e0e0e0;
+  }
+
+  .card h2 {
+    color: #ff9900;
+  }
+
+  .card p,
+  .card li {
+    color: #333;
+  }
+
+  .card li {
+    border-color: #f0f0f0;
+  }
+
+  .footer {
+    background: white;
+    border-color: #e0e0e0;
+    color: #666;
+  }
+}
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+
+  .main {
+    margin: 1rem auto;
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+}
