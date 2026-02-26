@@ -1,23 +1,29 @@
 import * as swaggerUi from 'swagger-ui-express'
 import { readFileSync, existsSync } from 'fs'
 import { INestApplication } from '@nestjs/common'
+import { SWAGGER_SPEC } from './swagger-spec'
 
 /**
- * Setup Swagger/OpenAPI documentation for local development
- * Note: Swagger is only available in local development, not in Lambda
+ * Setup Swagger/OpenAPI documentation for both local dev and production
+ * Uses embedded spec for production, file for local development
  * @param app NestJS application instance
  */
 export function setupSwagger(app: INestApplication): void {
   try {
-    // Look for swagger.json in the current working directory (local dev)
+    let swaggerDocument: any = SWAGGER_SPEC
+
+    // Try to load from file for local development (fallback to embedded)
     const swaggerPath = 'swagger.json'
-
-    if (!existsSync(swaggerPath)) {
-      console.log('ℹ️  Swagger documentation not available (only in local development)')
-      return
+    if (existsSync(swaggerPath)) {
+      try {
+        swaggerDocument = JSON.parse(readFileSync(swaggerPath, 'utf8'))
+        console.log('📄 Using swagger.json from file')
+      } catch (fileErr) {
+        console.log('📦 Using embedded Swagger spec')
+      }
+    } else {
+      console.log('📦 Using embedded Swagger spec (file not found)')
     }
-
-    const swaggerDocument = JSON.parse(readFileSync(swaggerPath, 'utf8'))
 
     // Get the underlying Express app
     const expressApp = app.getHttpAdapter().getInstance()
