@@ -1,0 +1,8 @@
+{
+  "app": "npx tsx cdk/bin/app.ts",
+  "watch": {
+    "include": ["**"],
+    "exclude": ["README.md", "cdk*.json", "dist", "node_modules", ".git"]
+  },
+  "context": {}
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src", "cdk"],
+  "exclude": ["node_modules", "dist"]
+}
