@@ -1,0 +1,260 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Todo API",
+    "description": "A serverless Todo CRUD API built with NestJS, Lambda, API Gateway, and DynamoDB",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "todos",
+      "description": "Todo management endpoints"
+    }
+  ],
+  "paths": {
+    "/todos": {
+      "post": {
+        "tags": ["todos"],
+        "summary": "Create a new todo",
+        "description": "Create a new todo item with a title, optional description, and status",
+        "operationId": "createTodo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTodoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Todo successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        }
+      },
+      "get": {
+        "tags": ["todos"],
+        "summary": "Get all todos",
+        "description": "Retrieve a list of all todo items",
+        "operationId": "findAllTodos",
+        "responses": {
+          "200": {
+            "description": "List of all todos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Todo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos/{id}": {
+      "get": {
+        "tags": ["todos"],
+        "summary": "Get a todo by ID",
+        "description": "Retrieve a specific todo item by its ID",
+        "operationId": "findOneTodo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the todo item",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Todo not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["todos"],
+        "summary": "Update a todo",
+        "description": "Update an existing todo item",
+        "operationId": "updateTodo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the todo item to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTodoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Todo successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "404": {
+            "description": "Todo not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["todos"],
+        "summary": "Delete a todo",
+        "description": "Delete a todo item by its ID",
+        "operationId": "removeTodo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the todo item to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Todo successfully deleted"
+          },
+          "404": {
+            "description": "Todo not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateTodoDto": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "Title of the todo item"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Detailed description of the todo item (optional)"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "in-progress", "completed"],
+            "default": "todo",
+            "description": "Current status of the todo item (optional)"
+          }
+        }
+      },
+      "UpdateTodoDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "Title of the todo item (optional)"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "description": "Detailed description of the todo item (optional)"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "in-progress", "completed"],
+            "description": "Current status of the todo item (optional)"
+          }
+        }
+      },
+      "Todo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the todo item"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the todo item"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the todo item"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "in-progress", "completed"],
+            "description": "Current status of the todo item"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the todo was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the todo was last updated"
+          }
+        }
+      }
+    }
+  }
+}
