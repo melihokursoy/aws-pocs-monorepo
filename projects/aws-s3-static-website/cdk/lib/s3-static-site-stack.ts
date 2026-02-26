@@ -3,9 +3,11 @@ import * as s3 from 'aws-cdk-lib/aws-s3'
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront'
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins'
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment'
-import * as iam from 'aws-cdk-lib/aws-iam'
 import { Construct } from 'constructs'
 import * as path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export interface S3StaticSiteStackProps extends cdk.StackProps {
   siteName?: string
@@ -18,11 +20,8 @@ export class S3StaticSiteStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: S3StaticSiteStackProps) {
     super(scope, id, props)
 
-    const siteName = props?.siteName || 'aws-s3-static-website'
-
     // Create S3 bucket for website content
     this.bucket = new s3.Bucket(this, 'WebsiteBucket', {
-      bucketName: `${siteName}-${this.account}-${this.region}`.toLowerCase(),
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       versioned: true,
@@ -30,10 +29,20 @@ export class S3StaticSiteStack extends cdk.Stack {
       autoDeleteObjects: true,
     })
 
-    // Create CloudFront distribution
+    // Create Origin Access Identity for CloudFront
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, 'OAI', {
+      comment: 'OAI for S3 bucket access',
+    })
+
+    // Grant CloudFront OAI read access to the bucket
+    this.bucket.grantRead(originAccessIdentity)
+
+    // Create CloudFront distribution with S3 bucket origin using S3Origin with OAI
     this.distribution = new cloudfront.Distribution(this, 'WebsiteDistribution', {
       defaultBehavior: {
-        origin: new origins.S3Origin(this.bucket),
+        origin: new origins.S3Origin(this.bucket, {
+          originAccessIdentity,
+        }),
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
         compress: true,
@@ -52,9 +61,6 @@ export class S3StaticSiteStack extends cdk.Stack {
         },
       ],
     })
-
-    // Grant CloudFront access to the S3 bucket
-    this.bucket.grantRead(this.distribution.identity)
 
     // Deploy website content to S3
     new s3deploy.BucketDeployment(this, 'WebsiteDeployment', {

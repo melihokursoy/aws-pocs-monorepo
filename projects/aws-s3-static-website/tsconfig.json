@@ -3,7 +3,6 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "rootDir": "./src",
     "outDir": "./dist"
   },
   "include": ["src", "cdk"],
