@@ -7,7 +7,7 @@
   "main": "cdk/lib/index.ts",
   "scripts": {
     "dev": "tsx src/main.ts",
-    "build": "esbuild src/lambda.ts --bundle --platform=node --target=node20 --outfile=dist/lambda.js --external:@aws-sdk/* --external:@nestjs/websockets --external:@nestjs/microservices && cp swagger.json dist/swagger.json",
+    "build": "esbuild src/lambda.ts --bundle --platform=node --target=node20 --format=esm --outfile=dist/lambda.js --external:@aws-sdk/* --external:@nestjs/websockets --external:@nestjs/microservices && cp swagger.json dist/swagger.json",
     "start": "node dist/lambda.js",
     "cdk:synth": "npx aws-cdk@latest synth",
     "cdk:deploy": "npx aws-cdk@latest deploy --require-approval=never",
