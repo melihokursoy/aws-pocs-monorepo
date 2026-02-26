@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__ide__getDiagnostics",
+      "Bash(curl:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.nestjs.com)"
+    ]
+  }
+}
